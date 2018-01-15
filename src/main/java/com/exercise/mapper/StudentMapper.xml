@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--映射接口-->
+<mapper namespace="com.exercise.mapper.StudentMapper">
+  	<!-- 查找所有学生 -->
+  	<select id="listStudents" resultType="com.exercise.pojo.po.Student">
+	    select * from student<!--注意：千万不能带;-->
+	</select>
+	<!-- 查找相应id的学生 -->
+	<select id="selectStudentById" parameterType="java.lang.Integer" resultType="com.exercise.pojo.po.Student">
+		<!-- OGNL表达式 -->
+		select * from student where id=#{id}
+	</select>
+	<!-- 模糊查询学生 -->
+	<!-- <select id="selectStudentLike1" parameterType="java.lang.String" resultType="com.exercise.pojo.po.Student">
+		select * from Student where name like '%${name}%'
+	</select> -->
+	<select id="selectStudentLike" parameterType="com.exercise.pojo.po.Student" resultType="com.exercise.pojo.po.Student">
+		<!-- EL表达式 -->
+		<!-- 容易产生Sql注入,后台要做参数过滤 -->
+		select * from Student where name like '%${name}%'
+	</select>
+	<!-- 多条件查询学生 -->
+	<!-- <select id="selectStudent" parameterType="java.lang.String" resultType="com.exercise.pojo.po.Student">
+		select * from student where name=#{0} and alias=#{1}
+	</select> -->
+	
+	<!-- 添加新学生 -->
+	<insert id="insertStudent" parameterType="com.exercise.pojo.po.Student">
+		insert into student(id,name,alias) values(#{id},#{name},#{alias})
+	</insert>
+	
+	<!-- 更新学生 -->
+	<update id="updateStudent" parameterType="com.exercise.pojo.po.Student" >
+		update student set name=#{name},alias=#{alias} where id=#{id}
+	</update>
+	
+	<!-- 删除学生 -->
+	<delete id="deleteStudent" parameterType="com.exercise.pojo.po.Student">
+		delete from student where id=#{id}
+	</delete>
+</mapper>
